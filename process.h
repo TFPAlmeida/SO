@@ -25,15 +25,16 @@ typedef struct timestamp{
 
 typedef struct lista_timestamps{
     int n_timestamps;
-    int currentadmissao;
+    int currenttimestamp;
     TIMESTAMP * timestamp;
 }DYNARRAY_TIMESTAMPS;
 
 int main_process(int argc, char* argv[]);
 
-void create_lista_timestamps(LISTA_TIMESTAMPS * listaTimestamps, int size);
-void insert_timestamps(LISTA_TIMESTAMPS * listaTimestamps, int admissao, int inicio_triagem, int inicio_medico, int fim_medico);
-void print_pais(LISTA_TIMESTAMPS *listaTimestamps);
+void create_dynarray_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int size);
+void ler_ficheiro(DYNARRAY_TIMESTAMPS * dynarrayTimestamps);
+void insert_dynarray_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, char admissao[], char inicio_triagem[], char fim_triagem[], char inicio_medico[], char fim_medico[]);
+void print_Timestamps(DYNARRAY_TIMESTAMPS *dynarrayTimestamps);
 
 #endif //SO_PROCESS_H
 
