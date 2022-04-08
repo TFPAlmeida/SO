@@ -26,7 +26,7 @@ typedef struct timestamp{
 typedef struct lista_timestamps{
     int n_timestamps;
     int currenttimestamp;
-    TIMESTAMP * timestamp;
+    TIMESTAMP * ptimestamp;
 }DYNARRAY_TIMESTAMPS;
 
 int main_process(int argc, char* argv[]);
@@ -34,7 +34,6 @@ int main_process(int argc, char* argv[]);
 void create_dynarray_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int size);
 void ler_ficheiro(DYNARRAY_TIMESTAMPS * dynarrayTimestamps);
 void insert_dynarray_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, char admissao[], char inicio_triagem[], char fim_triagem[], char inicio_medico[], char fim_medico[]);
-void print_Timestamps(DYNARRAY_TIMESTAMPS *dynarrayTimestamps);
 
 #endif //SO_PROCESS_H
 
