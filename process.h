@@ -31,9 +31,13 @@ typedef struct lista_timestamps{
 
 int main_process(int argc, char* argv[]);
 
+void tamanho_do_ficheiro(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, char nameficheiro[]);
 void create_dynarray_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int size);
 void ler_ficheiro(DYNARRAY_TIMESTAMPS * dynarrayTimestamps);
 void insert_dynarray_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, char admissao[], char inicio_triagem[], char fim_triagem[], char inicio_medico[], char fim_medico[]);
+void ocupacao_das_salas(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int timestamp);
+void ecrever_ficheiro();
+void print_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps);
 
 #endif //SO_PROCESS_H
 
