@@ -14,30 +14,18 @@
 
 #ifndef SO_PROCESS_H
 #define SO_PROCESS_H
+#define COLUMNS 5
 
-typedef struct timestamp{
-   int admissao;
-   int inicio_triagem;
-   int fim_triagem;
-   int inicio_medico;
-   int fim_medico;
-}TIMESTAMP;
-
-typedef struct lista_timestamps{
-    int n_timestamps;
-    int currenttimestamp;
-    TIMESTAMP * ptimestamp;
-}DYNARRAY_TIMESTAMPS;
 
 int main_process(int argc, char* argv[]);
 
-void tamanho_do_ficheiro(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, char nameficheiro[]);
-void create_dynarray_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int size);
-void ler_ficheiro(DYNARRAY_TIMESTAMPS * dynarrayTimestamps);
-void insert_dynarray_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, char admissao[], char inicio_triagem[], char fim_triagem[], char inicio_medico[], char fim_medico[]);
-void ocupacao_das_salas(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int timestamp);
+int tamanho_do_ficheiro( char nameficheiro[]);
+void create_dynarray_timestamps( int size);
+void ler_ficheiro(int m_timestamps[][COLUMNS], int lines );
+void insert_dynarray_timestamps(int m_timestamps[][COLUMNS], int lines , char admissao[], char inicio_triagem[], char fim_triagem[], char inicio_medico[], char fim_medico[]);
+void ocupacao_das_salas();
 void ecrever_ficheiro();
-void print_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps);
+void print_timestamps(int m_timestamps[][COLUMNS], int lines);
 
 #endif //SO_PROCESS_H
 

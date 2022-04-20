@@ -6,15 +6,19 @@
 
 #define PROCESS_NUM 2
 
+
 int main_process(int argc, char *argv[]) {
 
-    DYNARRAY_TIMESTAMPS dt = {0, 0};
+
     /******************************************************************************************************************/
     char nameficheiro[] = "C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv";
-    tamanho_do_ficheiro(&dt, nameficheiro);
-    print_timestamps(&dt);
+    int t_ficheiro = tamanho_do_ficheiro( nameficheiro);
+    int m_timestamps [t_ficheiro][COLUMNS];
+    int lines = t_ficheiro;
+    ler_ficheiro(m_timestamps, lines);
+    print_timestamps(m_timestamps, lines);
     /******************************************************************************************************************/
-    int pids[PROCESS_NUM];
+    /*int pids[PROCESS_NUM];
     dt.currenttimestamp = 0;
     for (int i = 0; i < PROCESS_NUM; i++) {
         pids[i] = fork();
@@ -31,13 +35,13 @@ int main_process(int argc, char *argv[]) {
     //Main Process
     for (int i = 0; i < PROCESS_NUM; i++) {
         wait(NULL);
-    }
+    }*/
     /******************************************************************************************************************/
 
     return 0;
 }
 
-void tamanho_do_ficheiro(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, char nameficheiro[]) {
+int tamanho_do_ficheiro(char nameficheiro[]) {
     int count = 0;
     FILE *fp;
     fp = fopen(nameficheiro, "r");
@@ -54,26 +58,11 @@ void tamanho_do_ficheiro(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, char namefiche
         }
     }
     fclose(fp);
-    create_dynarray_timestamps(dynarrayTimestamps, count);
-    ler_ficheiro(dynarrayTimestamps);
+
+    return count + 1;
 }
 
-void create_dynarray_timestamps(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int size) {
-    dynarrayTimestamps->ptimestamp = malloc(size * sizeof(TIMESTAMP));
-    dynarrayTimestamps->n_timestamps = size + 1;
-    dynarrayTimestamps->currenttimestamp = 0;
-    TIMESTAMP *t = dynarrayTimestamps->ptimestamp;
-    for (int i = 0; i < dynarrayTimestamps->n_timestamps; i++) {
-        t->admissao = 0;
-        t->inicio_triagem = 0;
-        t->fim_triagem = 0;
-        t->fim_medico = 0;
-        t->fim_medico = 0;
-    }
-
-}
-
-void ler_ficheiro(DYNARRAY_TIMESTAMPS *dynarrayTimestamps) {
+void ler_ficheiro(int (*m_timestamps)[COLUMNS], int lines) {
     FILE *file;
     file = fopen("C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv", "r");
 
@@ -86,6 +75,8 @@ void ler_ficheiro(DYNARRAY_TIMESTAMPS *dynarrayTimestamps) {
 
     }
 
+    int i = 0;
+
     while (fgets(line, sizeof(line), (FILE *) file) != NULL) {
 
         strcpy(admissao, strtok(line, delim));
@@ -93,37 +84,33 @@ void ler_ficheiro(DYNARRAY_TIMESTAMPS *dynarrayTimestamps) {
         strcpy(fim_triagem, strtok(NULL, delim));
         strcpy(inicio_medico, strtok(NULL, delim));
         strcpy(fim_medico, strtok(NULL, delim2));
-        insert_dynarray_timestamps(dynarrayTimestamps, admissao, inicio_triagem, fim_triagem, inicio_medico,
-                                   fim_medico);
 
+        *(*(m_timestamps + i) + 0) = atoi(admissao);
+        *(*(m_timestamps + i) + 1) = atoi(inicio_triagem);
+        *(*(m_timestamps + i) + 2) = atoi(fim_triagem);
+        *(*(m_timestamps + i) + 3) = atoi(inicio_medico);
+        *(*(m_timestamps + i) + 4) = atoi(fim_medico);
+
+        i++;
     }
 
-    fclose(file);
+
+
 
 }
 
-void insert_dynarray_timestamps(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, char admissao[], char inicio_triagem[],
-                                char fim_triagem[], char inicio_medico[], char fim_medico[]) {
-    TIMESTAMP *t = dynarrayTimestamps->ptimestamp + dynarrayTimestamps->currenttimestamp;
-    t->admissao = atoi(admissao);
-    t->inicio_triagem = atoi(inicio_triagem);
-    t->fim_triagem = atoi(fim_triagem);
-    t->inicio_medico = atoi(inicio_medico);
-    t->fim_medico = atoi(fim_medico);
-    printf("%d %d %d %d %d\n", t->admissao, t->inicio_triagem, t->fim_triagem, t->inicio_medico, t->fim_medico);
-    dynarrayTimestamps->currenttimestamp++;
+
+void print_timestamps(int m_timestamps[][COLUMNS], int lines){
+
+    for(int i = 0; i < lines; i++){
+        for(int x = 0; x < COLUMNS; x++){
+            printf("%d ", *(*(m_timestamps + i) + x));
+        }
+        printf("\n");
+    }
 }
 
 /*
-void print_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps){
-    TIMESTAMP *t = dynarrayTimestamps->ptimestamp;
-    for(int i = 0; i < dynarrayTimestamps->n_timestamps; i++){
-        printf("%d %d %d %d %d\n", t->admissao, t->inicio_triagem, t->fim_triagem, t->inicio_medico, t->fim_medico);
-        t++;
-    }
-}
-*/
-
 void ocupacao_das_salas(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int timestamp) {
     int size = dynarrayTimestamps->n_timestamps;
     TIMESTAMP *t = dynarrayTimestamps->ptimestamp + dynarrayTimestamps->currenttimestamp;
@@ -142,7 +129,7 @@ void ocupacao_das_salas(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int timestamp)
         dynarrayTimestamps->currenttimestamp++;
     }
 
-}
+}*/
 
 
 
