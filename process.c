@@ -12,15 +12,15 @@ int main_process(int argc, char *argv[]) {
 
     /******************************************************************************************************************/
     char nameficheiro[] = "C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv";
-    int t_ficheiro = tamanho_do_ficheiro( nameficheiro);
-    int m_timestamps [t_ficheiro][COLUMNS];
+    int t_ficheiro = tamanho_do_ficheiro(nameficheiro);
+    int m_timestamps[t_ficheiro][COLUMNS];
     int lines = t_ficheiro;
     ler_ficheiro(m_timestamps, lines);
     print_timestamps(m_timestamps, lines);
     /******************************************************************************************************************/
     /*int pids[PROCESS_NUM];
     dt.currenttimestamp = 0;
-    for (int i = 0; i < PROCESS_NUM; i++) {
+    for (int i = 1; i <= PROCESS_NUM; i++) {
         pids[i] = fork();
         if (pids[i] == -1) {
             perror("Error in fork!");
@@ -97,10 +97,10 @@ void ler_ficheiro(int (*m_timestamps)[COLUMNS], int lines) {
 }
 
 
-void print_timestamps(int m_timestamps[][COLUMNS], int lines){
+void print_timestamps(int m_timestamps[][COLUMNS], int lines) {
 
-    for(int i = 0; i < lines; i++){
-        for(int x = 0; x < COLUMNS; x++){
+    for (int i = 0; i < lines; i++) {
+        for (int x = 0; x < COLUMNS; x++) {
             printf("%d ", *(*(m_timestamps + i) + x));
         }
         printf("\n");
@@ -108,32 +108,34 @@ void print_timestamps(int m_timestamps[][COLUMNS], int lines){
 }
 
 
-void ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n ) {
+void ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n) {
     int sala_triagem = 0, triagem = 0, sala_de_espera = 0, consulta = 0;
     int size_process_child = lines / PROCESS_NUM;
-    int timestamps = 0;
-    if( n == PROCESS_NUM - 1 && lines % 2 != 0){
+    int x1 = 0, timestamps;
+    if (n == PROCESS_NUM && lines % 2 != 0) {
         size_process_child++;
     }
 
-    for(int x = 0; x < lines; x++){
+    if(n != 1){
+        x1 = size_process_child * (n - 1);
+    }
+
+    for (int x = x1; x < size_process_child * n; x++) {
         for (int y = 0; y < COLUMNS; y++) {
             timestamps = *(*(m_timestamps + x) + y);
-            for(int z = 0; z < size_process_child; z++){
-                if(*(*(m_timestamps + z) + 0) < timestamps < *(*(m_timestamps + z) + 1)){
+            for (int z = x1; z < size_process_child * n; z++) {
+                if (*(*(m_timestamps + z) + 0) < timestamps < *(*(m_timestamps + z) + 1)) {
                     sala_triagem++;
-                }else if(*(*(m_timestamps + z) + 1) < timestamps < *(*(m_timestamps + z) + 2)){
+                } else if (*(*(m_timestamps + z) + 1) < timestamps < *(*(m_timestamps + z) + 2)) {
                     triagem++;
-                }else if(*(*(m_timestamps + z) + 2) < timestamps < *(*(m_timestamps + z) + 3)){
+                } else if (*(*(m_timestamps + z) + 2) < timestamps < *(*(m_timestamps + z) + 3)) {
                     sala_de_espera++;
-                }else if(*(*(m_timestamps + z) + 3) < timestamps < *(*(m_timestamps + z) + 4)){
+                } else if (*(*(m_timestamps + z) + 3) < timestamps < *(*(m_timestamps + z) + 4)) {
                     consulta++;
                 }
             }
         }
     }
-
-
 }
 
 
