@@ -28,7 +28,7 @@ int main_process(int argc, char *argv[]) {
 
         if (pids[i] == 0) {
             //Child Process
-            ocupacao_das_salas(&dt, 0);
+            ocupacao_das_salas(m_timestamps, lines, i);
             exit(0);
         }
     }
@@ -94,9 +94,6 @@ void ler_ficheiro(int (*m_timestamps)[COLUMNS], int lines) {
         i++;
     }
 
-
-
-
 }
 
 
@@ -110,26 +107,34 @@ void print_timestamps(int m_timestamps[][COLUMNS], int lines){
     }
 }
 
-/*
-void ocupacao_das_salas(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int timestamp) {
-    int size = dynarrayTimestamps->n_timestamps;
-    TIMESTAMP *t = dynarrayTimestamps->ptimestamp + dynarrayTimestamps->currenttimestamp;
+
+void ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n ) {
     int sala_triagem = 0, triagem = 0, sala_de_espera = 0, consulta = 0;
-    int size_process_child = size / PROCESS_NUM;
-    for(int i = 0; i < size_process_child; i++){
-        if(t->admissao > timestamp && t->inicio_triagem < timestamp){
-            sala_triagem++;
-        }else if(t->inicio_triagem > timestamp && t->fim_triagem < timestamp){
-            triagem++;
-        }else if(t->fim_triagem > timestamp && t->inicio_medico < timestamp){
-            sala_de_espera++;
-        }else if(t->inicio_medico > timestamp && t->fim_medico < timestamp){
-            consulta++;
-        }
-        dynarrayTimestamps->currenttimestamp++;
+    int size_process_child = lines / PROCESS_NUM;
+    int timestamps = 0;
+    if( n == PROCESS_NUM - 1 && lines % 2 != 0){
+        size_process_child++;
     }
 
-}*/
+    for(int x = 0; x < lines; x++){
+        for (int y = 0; y < COLUMNS; y++) {
+            timestamps = *(*(m_timestamps + x) + y);
+            for(int z = 0; z < size_process_child; z++){
+                if(*(*(m_timestamps + z) + 0) < timestamps < *(*(m_timestamps + z) + 1)){
+                    sala_triagem++;
+                }else if(*(*(m_timestamps + z) + 1) < timestamps < *(*(m_timestamps + z) + 2)){
+                    triagem++;
+                }else if(*(*(m_timestamps + z) + 2) < timestamps < *(*(m_timestamps + z) + 3)){
+                    sala_de_espera++;
+                }else if(*(*(m_timestamps + z) + 3) < timestamps < *(*(m_timestamps + z) + 4)){
+                    consulta++;
+                }
+            }
+        }
+    }
+
+
+}
 
 
 
