@@ -21,12 +21,13 @@ int main_process(int argc, char* argv[]);
 
 int tamanho_do_ficheiro( char nameficheiro[]);
 void create_dynarray_timestamps( int size);
-void ler_ficheiro(int m_timestamps[][COLUMNS], int lines );
-void insert_dynarray_timestamps(int m_timestamps[][COLUMNS], int lines , char admissao[], char inicio_triagem[], char fim_triagem[], char inicio_medico[], char fim_medico[]);
-void ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n, char * path);
+void ler_ficheiro(char* m_timestamps[][COLUMNS], int lines );
+void insert_dynarray_timestamps(char m_timestamps[][COLUMNS], int lines , char admissao[], char inicio_triagem[], char fim_triagem[], char inicio_medico[], char fim_medico[]);
+void ocupacao_das_salas(char m_timestamps[][COLUMNS], int lines, int n, char * path);
 void ecrever_ficheiro(char * path, int timestamps, int sala_triagem , int triagem, int sala_de_espera, int consulta);
-void read_INFO_txt(char * path);
-void print_timestamps(int m_timestamps[][COLUMNS], int lines);
+
+void print_timestamps(char* m_timestamps[][COLUMNS], int lines);
+void tamanho_string(char* m_timestamps[][COLUMNS], int lines);
 
 #endif //SO_PROCESS_H
 

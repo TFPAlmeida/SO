@@ -15,7 +15,13 @@ int main_process(int argc, char *argv[]) {
     char nameficheiro[] = "C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv";
     char file_INFO_TXT[] = "../data/ficheirostxt/INFO_TXT.txt";
     int t_ficheiro = tamanho_do_ficheiro(nameficheiro);
-    int m_timestamps[t_ficheiro][COLUMNS];
+    char *m_timestamps[t_ficheiro][COLUMNS];
+    for (int i = 0; i < t_ficheiro; i++) {
+        for (int x = 0; x < COLUMNS; x++) {
+            m_timestamps[i][x] = (char *) calloc(11, sizeof(char));
+        }
+
+    }
     int lines = t_ficheiro;
     ler_ficheiro(m_timestamps, lines);
     print_timestamps(m_timestamps, lines);
@@ -64,7 +70,7 @@ int tamanho_do_ficheiro(char nameficheiro[]) {
     return count + 1;
 }
 
-void ler_ficheiro(int (*m_timestamps)[COLUMNS], int lines) {
+void ler_ficheiro(char *(*m_timestamps)[COLUMNS], int lines) {
     FILE *file;
     file = fopen("C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv", "r");
 
@@ -81,39 +87,47 @@ void ler_ficheiro(int (*m_timestamps)[COLUMNS], int lines) {
 
     while (fgets(line, sizeof(line), (FILE *) file) != NULL) {
 
-        strcpy(admissao, strtok(line, delim));
-        strcpy(inicio_triagem, strtok(NULL, delim));
-        strcpy(fim_triagem, strtok(NULL, delim));
-        strcpy(inicio_medico, strtok(NULL, delim));
-        strcpy(fim_medico, strtok(NULL, delim2));
-
-        *(*(m_timestamps + i) + 0) = atoi(admissao);
-        *(*(m_timestamps + i) + 1) = atoi(inicio_triagem);
-        *(*(m_timestamps + i) + 2) = atoi(fim_triagem);
-        *(*(m_timestamps + i) + 3) = atoi(inicio_medico);
-        *(*(m_timestamps + i) + 4) = atoi(fim_medico);
+        strcpy(*(*(m_timestamps + i) + 0), strtok(line, delim));
+        strcpy(*(*(m_timestamps + i) + 1), strtok(NULL, delim));
+        strcpy(*(*(m_timestamps + i) + 2), strtok(NULL, delim));
+        strcpy(*(*(m_timestamps + i) + 3), strtok(NULL, delim));
+        strcpy(*(*(m_timestamps + i) + 4), strtok(NULL, delim2));
 
         i++;
+    }
+    //tamanho_string(m_timestamps, lines);
+}
+
+void tamanho_string(char *m_timestamps[][COLUMNS], int lines) {
+    char timestamp[11];
+    for (int i = 0; i < lines; i++) {
+        for (int x = 0; x < COLUMNS; x++) {
+            strcpy(timestamp, *(*(m_timestamps + i) + x));
+            if (strlen(timestamp) < strlen(*(*(m_timestamps + 0) + 0))) {
+
+            }
+        }
     }
 }
 
 
-void print_timestamps(int m_timestamps[][COLUMNS], int lines) {
+void print_timestamps(char *m_timestamps[][COLUMNS], int lines) {
 
     for (int i = 0; i < lines; i++) {
         for (int x = 0; x < COLUMNS; x++) {
-            printf("%d ", *(*(m_timestamps + i) + x));
+            printf("%s ", *(*(m_timestamps + i) + x));
         }
         printf("\n");
     }
 }
 
 
-void ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n, char *path) {
+void ocupacao_das_salas(char m_timestamps[][COLUMNS], int lines, int n, char *path) {
     int sala_triagem = 0, triagem = 0, sala_de_espera = 0, consulta = 0;
     int size = lines / PROCESS_NUM;
     int size_process_child = size * n;
-    int x1 = 0, timestamps;
+    int x1 = 0;
+    char timestamps;
     if (n == PROCESS_NUM && lines % 2 != 0) {
         size_process_child++;
     }
@@ -126,16 +140,16 @@ void ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n, char *pat
         for (int y = 0; y < COLUMNS; y++) {
             timestamps = *(*(m_timestamps + x) + y);
             for (int z = x1; z < size_process_child; z++) {
-                if (*(*(m_timestamps + z) + 0) < timestamps < *(*(m_timestamps + z) + 1)) {
+                if (atoi(*(*(m_timestamps + z) + 0)) < atoi(timestamps) < atoi(*(*(m_timestamps + z) + 1))) {
                     sala_triagem++;
                 }
-                if (*(*(m_timestamps + z) + 1) < timestamps < *(*(m_timestamps + z) + 2)) {
+                if (atoi(*(*(m_timestamps + z) + 1)) < atoi(timestamps) < atoi(*(*(m_timestamps + z) + 2))) {
                     triagem++;
                 }
-                if (*(*(m_timestamps + z) + 2) < timestamps < *(*(m_timestamps + z) + 3)) {
+                if (atoi(*(*(m_timestamps + z) + 2)) < atoi(timestamps) < atoi(*(*(m_timestamps + z) + 3))) {
                     sala_de_espera++;
                 }
-                if (*(*(m_timestamps + z) + 3) < timestamps < *(*(m_timestamps + z) + 4)) {
+                if (atoi(*(*(m_timestamps + z) + 3)) < atoi(timestamps) < atoi(*(*(m_timestamps + z) + 4))) {
                     consulta++;
                 }
             }
@@ -171,9 +185,10 @@ void ecrever_ficheiro(char *path, int timestamps, int sala_triagem, int triagem,
 
     close(fd);
     free(buf);
-    read_INFO_txt(path);
+    //read_INFO_txt(path);
 }
 
+/*
 void read_INFO_txt(char * path) {
     long bytes, total=0, size;
 
@@ -195,7 +210,7 @@ void read_INFO_txt(char * path) {
 
     close(fd);
 
-}
+}*/
 
 
 
