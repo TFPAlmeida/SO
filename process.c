@@ -6,6 +6,7 @@
 
 #define PROCESS_NUM 2
 
+char path[100] = "C:\\Users\\tiago\\CLionProjects\\SO\\INFO_TXT.txt";
 
 int main_process(int argc, char *argv[]) {
 
@@ -29,7 +30,7 @@ int main_process(int argc, char *argv[]) {
 
         if (pids[i] == 0) {
             //Child Process
-            ocupacao_das_salas(m_timestamps, lines, i, file_INFO_TXT);
+            ocupacao_das_salas(m_timestamps, lines, i, path);
             exit(0);
         }
     }
@@ -94,7 +95,6 @@ void ler_ficheiro(int (*m_timestamps)[COLUMNS], int lines) {
 
         i++;
     }
-
 }
 
 
@@ -109,7 +109,7 @@ void print_timestamps(int m_timestamps[][COLUMNS], int lines) {
 }
 
 
-void ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n, char filename[]) {
+void ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n, char *path) {
     int sala_triagem = 0, triagem = 0, sala_de_espera = 0, consulta = 0;
     int size = lines / PROCESS_NUM;
     int size_process_child = size * n;
@@ -118,7 +118,7 @@ void ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n, char file
         size_process_child++;
     }
 
-    if(n != 1){
+    if (n != 1) {
         x1 = size * (n - 1);
     }
 
@@ -128,54 +128,73 @@ void ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n, char file
             for (int z = x1; z < size_process_child; z++) {
                 if (*(*(m_timestamps + z) + 0) < timestamps < *(*(m_timestamps + z) + 1)) {
                     sala_triagem++;
-                } else if (*(*(m_timestamps + z) + 1) < timestamps < *(*(m_timestamps + z) + 2)) {
+                }
+                if (*(*(m_timestamps + z) + 1) < timestamps < *(*(m_timestamps + z) + 2)) {
                     triagem++;
-                } else if (*(*(m_timestamps + z) + 2) < timestamps < *(*(m_timestamps + z) + 3)) {
+                }
+                if (*(*(m_timestamps + z) + 2) < timestamps < *(*(m_timestamps + z) + 3)) {
                     sala_de_espera++;
-                } else if (*(*(m_timestamps + z) + 3) < timestamps < *(*(m_timestamps + z) + 4)) {
+                }
+                if (*(*(m_timestamps + z) + 3) < timestamps < *(*(m_timestamps + z) + 4)) {
                     consulta++;
                 }
             }
-            ecrever_ficheiro(filename, timestamps,sala_triagem, triagem, sala_de_espera, consulta);
+            ecrever_ficheiro(path, timestamps, sala_triagem, triagem, sala_de_espera, consulta);
+            sala_triagem = 0;
+            triagem = 0;
+            sala_de_espera = 0;
+            consulta = 0;
         }
     }
+
 }
 
-void ecrever_ficheiro(char filename[], int timestamps, int sala_triagem , int triagem, int sala_de_espera, int consulta){
-    FILE *arquivoINFO = NULL;
+void ecrever_ficheiro(char *path, int timestamps, int sala_triagem, int triagem, int sala_de_espera, int consulta) {
+    int fd = open(path, O_WRONLY | O_APPEND | O_CREAT, 0744);
 
-    if ((arquivoINFO = fopen(filename, "w")) == NULL) {
-        fprintf(stdout, "ERRO\n");
-        return;
+    if (fd == -1) {
+        perror("File open");
+        exit(1);
     }
 
-    fprintf(arquivoINFO, "id: %d | timestamp: %d | sala: sala de triagem | ocupacao: %d\n", getpid(), timestamps, sala_triagem);
-    fprintf(arquivoINFO, "id: %d | timestamp: %d | sala: triagem | ocupacao: %d\n", getpid(), timestamps, triagem);
-    fprintf(arquivoINFO, "id: %d | timestamp: %d | sala: sala de espera | ocupacao: %d\n", getpid(), timestamps, sala_de_espera);
-    fprintf(arquivoINFO, "id: %d | timestamp: %d | sala: sala de triagem | ocupacao: %d\n", getpid(), timestamps, consulta);
+    char *buf = (char *) malloc(sizeof(char) * 1000000);
 
-    fclose(arquivoINFO);
-    printf("Sucesso!\n");
+    sprintf(buf, "id: %d | timestamp: %d | sala: sala de triagem | ocupacao: %d\n", getpid(), timestamps, sala_triagem);
+    sprintf(buf, "id: %d | timestamp: %d | sala: triagem | ocupacao: %d\n", getpid(), timestamps, triagem);
+    sprintf(buf, "id: %d | timestamp: %d | sala: sala de espera | ocupacao: %d\n", getpid(), timestamps,
+            sala_de_espera);
+    sprintf(buf, "id: %d | timestamp: %d | sala: sala de triagem | ocupacao: %d\n", getpid(), timestamps, consulta);
 
-    read_INFO_txt(filename);
+    strcat(buf, "\n");
+    write(fd, buf, strlen(buf));
+
+
+    close(fd);
+    free(buf);
+    read_INFO_txt(path);
 }
 
-void read_INFO_txt(char filename[]){
-    FILE *arquivoINFO;
+void read_INFO_txt(char * path) {
+    long bytes, total=0, size;
 
-    if ((arquivoINFO = fopen(filename, "r")) == NULL) {
-        fprintf(stdout, "ERRO\n");
-        return;
+    char * cds=NULL;
+
+    int fd = open(path, O_RDONLY);
+    if (fd == -1)
+    {
+        perror("File open");
+        exit(1);
     }
 
-    char aux1[100];
-    int n1 = 0, n2 = 0, n3 = 0;
+    size = lseek(fd, 0, SEEK_END);
+    lseek(fd, 0, SEEK_SET);
 
-    while(arquivoINFO != NULL){
-        fscanf(arquivoINFO, "%d | %d | %[^|] | %d", &n1, &n2, aux1, &n3);
-    }
-    fclose(arquivoINFO);
-    printf("Sucesso\n");
+    cds = (char *) malloc(sizeof(char) * (size+1));
+    while ((bytes = read(fd, cds+total, 4096)))
+        total += bytes;
+
+    close(fd);
+
 }
 
 
