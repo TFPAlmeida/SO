@@ -1,6 +1,9 @@
 //
-// Created by tiago on 31/03/2022.
+// Created by tiago on 23/04/2022.
 //
+
+#ifndef SO_PIPES_H
+#define SO_PIPES_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,18 +15,17 @@
 #include <sys/time.h>
 #include <math.h>
 
-#ifndef SO_PROCESS_H
-#define SO_PROCESS_H
+
 #define COLUMNS 5
 
 
-int main_process(int argc, char* argv[]);
+int main_pipes(int argc, char* argv[]);
 
 int tamanho_do_ficheiro( char nameficheiro[]);
 void ler_ficheiro(int m_timestamps[][COLUMNS], int lines );
-void ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n, char * path);
+int * ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n, char * path, int fd[2]);
 void ecrever_ficheiro(char * path,int timestamps, int ocupacao[4], char * salas[4]);
 void read_INFO_txt(char * path);
 void print_timestamps(int m_timestamps[][COLUMNS], int lines);
 
-#endif //SO_PROCESS_H
+#endif //SO_PIPES_H
