@@ -3,4 +3,4 @@ project(SO C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(SO main.c process.c process.h pipes.c pipes.h)
+add_executable(SO main.c process.c process.h pipes.c pipes.h pipes_2_.c pipes_2_.h)

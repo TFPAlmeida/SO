@@ -42,6 +42,16 @@ int main_pipes(int argc, char *argv[]) {
     }
     //Main Process
 
+    int ocupacao[4], id, timestamps;
+    char *salas1[4];
+    close(fd[1]);
+    for(int i = 0; i < 4; i++){
+        write(fd[0], &id, sizeof(int));
+        write(fd[0], &timestamps, sizeof(int));
+        write(fd[0], salas + i, sizeof(char));
+        write(fd[0], ocupacao + i, sizeof(int));
+    }
+    close(fd[0]);
     for (int i = 0; i < PROCESS_NUM; i++) {
         wait(NULL);
     }
