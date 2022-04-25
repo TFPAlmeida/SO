@@ -13,10 +13,13 @@
 #include <math.h>
 #include <sys/time.h>
 #include <math.h>
+#include <time.h>
 
 
 #define COLUMNS 5
 
 
 int main_pipes_2_(int argc, char* argv[]);
+int tamanho_do_ficheiro_2_(char nameficheiro[]);
+void ler_ficheiro_2_(int (*m_timestamps)[COLUMNS], int lines);
 #endif //SO_PIPES_2__H

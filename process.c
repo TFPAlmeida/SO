@@ -17,8 +17,9 @@ int main_process(int argc, char *argv[]) {
     int m_timestamps[t_ficheiro][COLUMNS];
     int lines = t_ficheiro;
     ler_ficheiro(m_timestamps, lines);
+
     /******************************************************************************************************************/
-    int pids[PROCESS_NUM];
+    /*int pids[PROCESS_NUM];
 
     for (int i = 1; i <= PROCESS_NUM; i++) {
         pids[i] = fork();
@@ -34,7 +35,7 @@ int main_process(int argc, char *argv[]) {
     //Main Process
     for (int i = 0; i < PROCESS_NUM; i++) {
         wait(NULL);
-    }
+    }*/
     /******************************************************************************************************************/
 
     return 0;
@@ -153,28 +154,5 @@ void ecrever_ficheiro(char *path,int timestamps, int ocupacao[4], char * salas[4
 
     close(fd);
     free(buf);
-    //read_INFO_txt(path);
 }
 
-void read_INFO_txt(char * path) {
-    long bytes, total=0, size;
-
-    char * cds=NULL;
-
-    int fd = open(path, O_RDONLY);
-    if (fd == -1)
-    {
-        perror("File open");
-        exit(1);
-    }
-
-    size = lseek(fd, 0, SEEK_END);
-    lseek(fd, 0, SEEK_SET);
-
-    cds = (char *) malloc(sizeof(char) * (size+1));
-    while ((bytes = read(fd, cds+total, 4096)))
-        total += bytes;
-
-    close(fd);
-
-}

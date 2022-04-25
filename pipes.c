@@ -6,20 +6,19 @@
 
 #define PROCESS_NUM 2
 
-char path[100] = "C:\\Users\\tiago\\CLionProjects\\SO\\INFO_TXT.txt";
 char *salas[] = {"sala_triagem", "triagem", "sala_de_espera","consulta"};
 
 int main_pipes(int argc, char *argv[]) {
 
 
-    /******************************************************************************************************************/
+
     char nameficheiro[] = "C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv";
-    int t_ficheiro = tamanho_do_ficheiro(nameficheiro);
+    int t_ficheiro = tamanho_do_ficheiro_1_(nameficheiro);
     int m_timestamps[t_ficheiro][COLUMNS];
     int lines = t_ficheiro;
-    ler_ficheiro(m_timestamps, lines);
-    /******************************************************************************************************************/
-    int pids[PROCESS_NUM];
+    ler_ficheiro_1_(m_timestamps, lines);
+
+    /*int pids[PROCESS_NUM];
     int fd[2];
 
     for(int i = 0; i < PROCESS_NUM; i++){
@@ -35,32 +34,32 @@ int main_pipes(int argc, char *argv[]) {
         if (pids[i] == 0) {
             //Child Process
             close(fd[0]);
-            ocupacao_das_salas(m_timestamps, lines, i, path, fd);
+            ocupacao_das_salas_1_(m_timestamps, lines, i, fd);
             close(fd[1]);
             exit(0);
         }
     }
     //Main Process
 
-    int ocupacao[4], id, timestamps;
-    char *salas1[4];
+    int ocupacao_2_[4], id_2_, timestamps_2_;
+    char *salas_2_[4];
     close(fd[1]);
     for(int i = 0; i < 4; i++){
-        write(fd[0], &id, sizeof(int));
-        write(fd[0], &timestamps, sizeof(int));
-        write(fd[0], salas + i, sizeof(char));
-        write(fd[0], ocupacao + i, sizeof(int));
+        write(fd[0], &id_2_, sizeof(int));
+        write(fd[0], &timestamps_2_, sizeof(int));
+        write(fd[0], salas_2_ + i, sizeof(char));
+        write(fd[0], ocupacao_2_ + i, sizeof(int));
     }
     close(fd[0]);
     for (int i = 0; i < PROCESS_NUM; i++) {
         wait(NULL);
-    }
-    /******************************************************************************************************************/
+    }*/
+
 
     return 0;
 }
 
-int tamanho_do_ficheiro(char nameficheiro[]) {
+int tamanho_do_ficheiro_1_(char nameficheiro[]) {
     int count = 0;
     FILE *fp;
     fp = fopen(nameficheiro, "r");
@@ -81,7 +80,7 @@ int tamanho_do_ficheiro(char nameficheiro[]) {
     return count + 1;
 }
 
-void ler_ficheiro(int (*m_timestamps)[COLUMNS], int lines) {
+void ler_ficheiro_1_(int (*m_timestamps)[COLUMNS], int lines) {
     FILE *file;
     file = fopen("C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv", "r");
 
@@ -114,7 +113,7 @@ void ler_ficheiro(int (*m_timestamps)[COLUMNS], int lines) {
     }
 }
 
-int * ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n, char *path, int fd[2]) {
+void ocupacao_das_salas_1_(int m_timestamps[][COLUMNS], int lines, int n, int fd[2]) {
     int size = lines / PROCESS_NUM;
     int size_process_child = size * n;
     int x1 = 0, timestamps, id = getpid();

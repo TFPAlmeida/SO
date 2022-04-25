@@ -21,11 +21,9 @@
 
 int main_pipes(int argc, char* argv[]);
 
-int tamanho_do_ficheiro( char nameficheiro[]);
-void ler_ficheiro(int m_timestamps[][COLUMNS], int lines );
-int * ocupacao_das_salas(int m_timestamps[][COLUMNS], int lines, int n, char * path, int fd[2]);
-void ecrever_ficheiro(char * path,int timestamps, int ocupacao[4], char * salas[4]);
-void read_INFO_txt(char * path);
-void print_timestamps(int m_timestamps[][COLUMNS], int lines);
+int tamanho_do_ficheiro_1_( char nameficheiro[]);
+void ler_ficheiro_1_(int m_timestamps[][COLUMNS], int lines );
+void ocupacao_das_salas_1_(int m_timestamps[][COLUMNS], int lines, int n, int fd[2]);
+void print_timestamps_1_(int m_timestamps[][COLUMNS], int lines);
 
 #endif //SO_PIPES_H
