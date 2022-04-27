@@ -10,10 +10,12 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <string.h>
 #include <math.h>
 #include <sys/time.h>
-#include <math.h>
+#include <sys/wait.h>
+#include <errno.h>
 
 
 #define COLUMNS 5
