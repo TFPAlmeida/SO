@@ -8,7 +8,7 @@
 #define PROCESS_NUM 2
 
 
-char *salas[] = {"sala_triagem", "triagem", "sala_de_espera", "consulta"};
+char *salas_1_[] = {"sala_triagem", "triagem", "sala_de_espera", "consulta"};
 
 int main_pipes(int argc, char *argv[]) {
 
@@ -52,7 +52,7 @@ int main_pipes(int argc, char *argv[]) {
     close(fd[1]);
     dup(ficheiro);
     ssize_t n;
-    while ((n = readn(fd[0], buffer, SIZE)) > 0)   // pai vai ler do pipe
+    while ((n = read(fd[0], buffer, SIZE)) > 0)   // pai vai ler do pipe
     {
         write(ficheiro, buffer, sizeof(buffer));
     }
@@ -164,9 +164,9 @@ void ocupacao_das_salas_1_(DYNARRAY_TIMESTAMPS_1_ *dynarrayTimestamps, int lines
             times = timestamps[z];
 
             for (int i = 0; i < 4; i++) {
-                sprintf(buf, "#PID:%d |%d | %s | %d", id, times, *(salas + i), ocupacao[i]);
+                sprintf(buf, "#PID:%d |%d | %s | %d", id, times, *(salas_1_ + i), ocupacao[i]);
                 strcat(buf, "\n");
-                writen(fds[1], buf, strlen(buf));
+                write(fd[1], buf, strlen(buf));
                 ocupacao[i] = 0;
             }
         }
