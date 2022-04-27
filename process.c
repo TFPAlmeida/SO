@@ -7,6 +7,7 @@
 #define PROCESS_NUM 2
 
 char path[100] = "C:\\Users\\tiago\\CLionProjects\\SO\\INFO_TXT.txt";
+char *salas[] = {"sala_triagem", "triagem", "sala_de_espera", "consulta"};
 
 int main_process(int argc, char *argv[]) {
 
@@ -29,7 +30,7 @@ int main_process(int argc, char *argv[]) {
         }
         if (pids[i] == 0) {
             //Child Process
-            ocupacao_das_salas(m_timestamps, lines, i, path);
+            ocupacao_das_salas(&dt, lines, i, path);
             exit(0);
         }
     }
@@ -99,11 +100,10 @@ void ler_ficheiro(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int lines) {
     }
 }
 
-void ocupacao_das_salas(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int lines, int n, char *path) {
+void ocupacao_das_salas(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int lines, int n) {
     int size = lines / PROCESS_NUM;
     int size_process_child = size * n;
     int x1 = 0, timestamps[5], times;
-    char *salas[] = {"sala_triagem", "triagem", "sala_de_espera", "consulta"};
     int ocupacao[4] = {0, 0, 0, 0};
     if (n == PROCESS_NUM && lines % 2 != 0) {
         size_process_child++;
@@ -139,7 +139,7 @@ void ocupacao_das_salas(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int lines, int 
                 }
             }
             times = timestamps[z];
-            ecrever_ficheiro(path, times, ocupacao, salas);
+            escrever_ficheiro(path,times, ocupacao);
             for(int i = 0; i < 4; i++){
                 ocupacao[i]=0;
             }
@@ -150,8 +150,8 @@ void ocupacao_das_salas(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int lines, int 
 
 }
 
-void ecrever_ficheiro(char *path, int timestamps, int ocupacao[4], char *salas[4]) {
-    int fd = open(path, O_WRONLY | O_APPEND | O_CREAT, 0744);
+void escrever_ficheiro(char *path1, int timestamps, int ocupacao[4]) {
+    int fd = open(path1, O_WRONLY | O_APPEND | O_CREAT, 0744);
 
     if (fd == -1) {
         perror("File open");

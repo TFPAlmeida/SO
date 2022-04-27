@@ -34,8 +34,8 @@ int main_process(int argc, char* argv[]);
 int tamanho_do_ficheiro( char nameficheiro[]);
 void create_lista_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int size);
 void ler_ficheiro(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int lines );
-void ocupacao_das_salas(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int lines, int n, char * path);
-void ecrever_ficheiro(char * path,int timestamps, int ocupacao[4], char * salas[4]);
+void ocupacao_das_salas(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int lines, int n);
+void escrever_ficheiro(char * path,int timestamps, int ocupacao[4]);
 void read_INFO_txt(char * path);
 void print_timestamps(DYNARRAY_TIMESTAMPS * dynarrayTimestamps, int lines);
 
