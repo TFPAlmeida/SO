@@ -14,7 +14,7 @@
 #include <string.h>
 #include <math.h>
 #include <sys/time.h>
-#include <sys/wait.h>
+//#include <sys/wait.h>
 #include <errno.h>
 
 

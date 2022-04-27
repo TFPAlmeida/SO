@@ -23,7 +23,7 @@ int main_pipes(int argc, char *argv[]) {
     print_timestamps_1_(&dt, lines);
     char buffer[SIZE];
     /******************************************************************************************************************/
-    int pids[PROCESS_NUM];
+    /*int pids[PROCESS_NUM];
     int fd[2];
 
     for (int i = 0; i < PROCESS_NUM; i++) {
@@ -60,7 +60,7 @@ int main_pipes(int argc, char *argv[]) {
 
     wait(NULL);
 
-
+*/
     /******************************************************************************************************************/
     return 0;
 }
@@ -164,7 +164,7 @@ void ocupacao_das_salas_1_(DYNARRAY_TIMESTAMPS_1_ *dynarrayTimestamps, int lines
             times = timestamps[z];
 
             for (int i = 0; i < 4; i++) {
-                sprintf(buf, "#PID:%d |%d | %s | %d", id, times, *(salas_1_ + i), ocupacao[i]);
+                sprintf(buf, "id: %d | timestamp: %d | sala: %s | ocupacao: %d", id, times, *(salas_1_ + i), ocupacao[i]);
                 strcat(buf, "\n");
                 write(fd[1], buf, strlen(buf));
                 ocupacao[i] = 0;

@@ -161,8 +161,10 @@ void escrever_ficheiro(char *path1, int timestamps, int ocupacao[4]) {
     char *buf = (char *) malloc(sizeof(char) * 1000000);
 
     for (int i = 0; i < 4; i++) {
-        sprintf(buf, "id: %d | timestamp: %d | sala: %s | ocupacao: %d\n", getpid(), timestamps, *(salas + i),
+        printf("%d",i);
+        sprintf(buf, "id: %d | timestamp: %d | sala: %s | ocupacao: %d", getpid(), timestamps, *(salas + i),
                 ocupacao[i]);
+        strcat(buf, "\n");
     }
 
     strcat(buf, "\n");
