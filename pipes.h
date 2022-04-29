@@ -20,26 +20,14 @@
 
 #define COLUMNS 5
 
-typedef struct timestamp_1_{
-    int admissao;
-    int inicio_triagem;
-    int fim_triagem;
-    int inicio_medico;
-    int fim_medico;
-}TIMESTAMP_1_;
-
-typedef struct lista_timestamps_1_{
-    int n_timestamps;
-    int currentadmissao;
-    TIMESTAMP_1_ * timestamp;
-}DYNARRAY_TIMESTAMPS_1_;
-
 int main_pipes(int argc, char* argv[]);
 
 int tamanho_do_ficheiro_1_( char nameficheiro[]);
-void create_lista_timestamps_1_(DYNARRAY_TIMESTAMPS_1_ *dynarrayTimestamps, int size);
-void ler_ficheiro_1_(DYNARRAY_TIMESTAMPS_1_ * dynarrayTimestamps, int lines );
-void ocupacao_das_salas_1_(DYNARRAY_TIMESTAMPS_1_ * dynarrayTimestamps, int lines, int n, int fd[2]);
-void print_timestamps_1_(DYNARRAY_TIMESTAMPS_1_ * dynarrayTimestamps, int lines);
+void ler_ficheiro_1_(int** arr, int lines );
+void ocupacao_das_salas_1_(int** arr, int lines, int n, int fd[2]);
+void print_timestamps_1_(int** arr, int lines);
+
+ssize_t readn(int fd, void *vptr, size_t n);
+ssize_t writen(int fd, const void *vptr, size_t n);
 
 #endif //SO_PIPES_H
