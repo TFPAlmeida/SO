@@ -13,7 +13,7 @@ char *salas_2_[] = {"sala_triagem", "triagem", "sala_de_espera", "consulta"};
 
 
 void handle_sigusr1(int signal_number) {
-    if (signal_number == SIGUSR1) {
+   // if (signal_number == SIGUSR1) {
         char *arg_list[] = {
                 "ls",     /* argv[0], the name of the program.  */
                 "-l",
@@ -30,12 +30,12 @@ void handle_sigusr1(int signal_number) {
         // execve("/bin/ls", arg_list, env_list);
         // execlp("./teste", NULL);
     }
-}
+//}
 
 int main_pipes_2_(int argc, char *argv[]) {
     time_t currentTime;
 
-    char nameficheiro[] = "C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv";
+    char nameficheiro[] = "C:\\Users\\tiago\\CLionProjects\\SO\\Data\\all_timestamps.csv";
 
     int lines = tamanho_do_ficheiro_2_(nameficheiro);
     int size = lines * 5;
@@ -74,7 +74,7 @@ int main_pipes_2_(int argc, char *argv[]) {
     int pids[PROCESS_NUM], fds[PROCESS_NUM][2];
 
     for (int i = 1; i <= PROCESS_NUM; i++) {
-        pids[i] = fork();
+        //pids[i] = fork();
         if (pids[i] == -1) {
             perror("Error with creating process\n");
         }
@@ -82,22 +82,22 @@ int main_pipes_2_(int argc, char *argv[]) {
             //Child Process
             close(fds[i][0]);
             ocupacao_das_salas_2_(arr, lines, i, fds, PROCESS_NUM);
-            kill(getppid(), SIGUSR1);
+           // kill(getppid(), SIGUSR1);
             close(fds[i][1]);
             exit(0);
         }
     }
 
     //Main Process
-    struct sigaction sa;
-    sa.sa_flags = SA_RESTART;
-    sa.sa_handler = &handle_sigusr1;
-    sigaction(SIGUSR1, &sa, NULL);
+   // struct sigaction sa;
+    //sa.sa_flags = SA_RESTART;
+    //sa.sa_handler = &handle_sigusr1;
+    //sigaction(SIGUSR1, &sa, NULL);
 
     for (int i = 0; i < PROCESS_NUM; i++) {
         int ocupacao_2_[4], id_2_, timestamps_2_;
         char *salas_3_[4];
-        int ficheiro = open("C:\\Users\\tiago\\CLionProjects\\SO\\pipe.txt", O_WRONLY | O_APPEND | O_CREAT, 0666);
+        int ficheiro = open("C:\\Users\\tiago\\CLionProjects\\SO\\Data\\pipe.txt", O_WRONLY | O_APPEND | O_CREAT, 0666);
         close(fds[i][1]);
         dup(ficheiro);
         ssize_t n;
@@ -105,7 +105,7 @@ int main_pipes_2_(int argc, char *argv[]) {
         {
             write(ficheiro, buffer, sizeof(buffer));
         }
-        wait(NULL);
+        //wait(NULL);
         close(fds[i][0]);
     }
 
@@ -138,7 +138,7 @@ int tamanho_do_ficheiro_2_(char nameficheiro[]) {
 
 void ler_ficheiro_2_(int **arr, int lines) {
     FILE *file;
-    file = fopen("C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv", "r");
+    file = fopen("C:\\Users\\tiago\\CLionProjects\\SO\\Data\\all_timestamps.csv", "r");
 
     char admissao[11], inicio_triagem[11], fim_triagem[11], inicio_medico[11], fim_medico[11], line[100];
     char *delim = ";";
@@ -187,16 +187,16 @@ void ocupacao_das_salas_2_(int **arr, int lines, int n, int fd[][2], int PROCESS
             timestamps = *(*(arr + x) + z);
             for (int y = x1; y < size_process_child; y++) {
 
-                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 0)) {
+                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 1)) {
                     ocupacao[0]++;
                 }
-                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 0)) {
+                if (*(*(arr + y) + 1) < timestamps < *(*(arr + y) + 2)) {
                     ocupacao[1]++;
                 }
-                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 0)) {
+                if (*(*(arr + y) + 3) < timestamps < *(*(arr + y) + 4)) {
                     ocupacao[2]++;
                 }
-                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 0)) {
+                if (*(*(arr + y) + 4) < timestamps < *(*(arr + y) + 5)) {
                     ocupacao[3]++;
                 }
             }
@@ -217,7 +217,7 @@ void ocupacao_das_salas_2_(int **arr, int lines, int n, int fd[][2], int PROCESS
 
 
 }
-
+/*
 ssize_t                          //Read "n" bytes from a descriptor.
 readn(int fd, void *vptr, size_t n) {
     size_t nleft;
@@ -277,3 +277,4 @@ void print_timestamps_2_(int **arr, int lines) {
     }
 
 }
+*/

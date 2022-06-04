@@ -14,7 +14,7 @@ int main_pipes(int argc, char *argv[]) {
 
 
     /******************************************************************************************************************/
-    char nameficheiro[] = "C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv";
+    char nameficheiro[] = "C:\\Users\\tiago\\CLionProjects\\SO\\Data\\all_timestamps.csv";
 
     int t_ficheiro = tamanho_do_ficheiro_1_(nameficheiro);
     int lines = t_ficheiro;
@@ -53,7 +53,7 @@ int main_pipes(int argc, char *argv[]) {
 
     int ocupacao_2_[4], id_2_, timestamps_2_;
     char *salas_2_[4];
-    int ficheiro = open("C:\\Users\\tiago\\CLionProjects\\SO\\pipe.txt", O_WRONLY|O_APPEND|O_CREAT, 0666);
+    int ficheiro = open("C:\\Users\\tiago\\CLionProjects\\SO\\Data\\pipe.txt", O_WRONLY|O_APPEND|O_CREAT, 0666);
     close(fd[1]);
     dup(ficheiro);
     ssize_t n;
@@ -94,7 +94,7 @@ int tamanho_do_ficheiro_1_(char nameficheiro[]) {
 
 void ler_ficheiro_1_(int** arr, int lines) {
     FILE *file;
-    file = fopen("C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv", "r");
+    file = fopen("C:\\Users\\tiago\\CLionProjects\\SO\\Data\\all_timestamps.csv", "r");
 
     char admissao[11], inicio_triagem[11], fim_triagem[11], inicio_medico[11], fim_medico[11], line[100];
     char *delim = ";";
@@ -143,16 +143,16 @@ void ocupacao_das_salas_1_(int** arr, int lines, int n, int fd[2]) {
             timestamps = *(*(arr + x) + z);
             for (int y = x1; y < size_process_child; y++) {
 
-                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 0)) {
+                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 1)) {
                     ocupacao[0]++;
                 }
-                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 0)) {
+                if (*(*(arr + y) + 1) < timestamps < *(*(arr + y) + 2)) {
                     ocupacao[1]++;
                 }
-                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 0)) {
+                if (*(*(arr + y) + 3) < timestamps < *(*(arr + y) + 4)) {
                     ocupacao[2]++;
                 }
-                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 0)) {
+                if (*(*(arr + y) + 4) < timestamps < *(*(arr + y) + 5)) {
                     ocupacao[3]++;
                 }
             }

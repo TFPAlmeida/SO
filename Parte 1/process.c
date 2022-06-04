@@ -6,14 +6,14 @@
 
 #define PROCESS_NUM 2
 
-char path[100] = "C:\\Users\\tiago\\CLionProjects\\SO\\INFO_TXT.txt";
+char path[100] = "C:\\Users\\tiago\\CLionProjects\\SO\\Data\\INFO_TXT.txt";
 char *salas[] = {"sala_triagem", "triagem", "sala_de_espera", "consulta"};
 
 int main_process(int argc, char *argv[]) {
 
 
     /******************************************************************************************************************/
-    char nameficheiro[] = "C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv";
+    char nameficheiro[] = "C:\\Users\\tiago\\CLionProjects\\SO\\Data\\all_timestamps.csv";
     int t_ficheiro = tamanho_do_ficheiro(nameficheiro);
     int lines = t_ficheiro;
     int** arr = (int**)malloc(lines * sizeof(int*));
@@ -25,7 +25,7 @@ int main_process(int argc, char *argv[]) {
     ler_ficheiro(arr, lines);
     print_timestamps(arr, lines);
     /******************************************************************************************************************/
-    /*int pids[PROCESS_NUM];
+   /* int pids[PROCESS_NUM];
 
     for (int i = 1; i <= PROCESS_NUM; i++) {
         pids[i] = fork();
@@ -34,7 +34,7 @@ int main_process(int argc, char *argv[]) {
         }
         if (pids[i] == 0) {
             //Child Process
-            ocupacao_das_salas(arr, lines, i, path);
+            ocupacao_das_salas(arr, lines, i);
             exit(0);
         }
     }
@@ -71,7 +71,7 @@ int tamanho_do_ficheiro(char nameficheiro[]) {
 
 void ler_ficheiro(int** arr, int lines) {
     FILE *file;
-    file = fopen("C:\\Users\\tiago\\CLionProjects\\SO\\all_timestamps.csv", "r");
+    file = fopen("C:\\Users\\tiago\\CLionProjects\\SO\\Data\\all_timestamps.csv", "r");
 
     char admissao[11], inicio_triagem[11], fim_triagem[11], inicio_medico[11], fim_medico[11], line[100];
     char *delim = ";";
@@ -119,16 +119,16 @@ void ocupacao_das_salas(int** arr, int lines, int n) {
             timestamps = *(*(arr + x) + z);
             for (int y = x1; y < size_process_child; y++) {
 
-                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 0)) {
+                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 1)) {
                     ocupacao[0]++;
                 }
-                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 0)) {
+                if (*(*(arr + y) + 1) < timestamps < *(*(arr + y) + 2)) {
                     ocupacao[1]++;
                 }
-                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 0)) {
+                if (*(*(arr + y) + 2) < timestamps < *(*(arr + y) + 3)) {
                     ocupacao[2]++;
                 }
-                if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 0)) {
+                if (*(*(arr + y) + 3) < timestamps < *(*(arr + y) + 4)) {
                     ocupacao[3]++;
                 }
             }
