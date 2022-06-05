@@ -28,10 +28,10 @@ int main_pipes(int argc, char *argv[]) {
     print_timestamps_1_(arr, lines);
     char buffer[SIZE];
     /******************************************************************************************************************/
-    /*int pids[PROCESS_NUM];
+    int pids[PROCESS_NUM];
     int fd[2];
 
-    for (int i = 0; i < PROCESS_NUM; i++) {
+   /* for (int i = 0; i < PROCESS_NUM; i++) {
         if (pipe(fd) == -1) {
             perror("Error with creating pipe\n");
         }
@@ -64,8 +64,8 @@ int main_pipes(int argc, char *argv[]) {
 
 
     wait(NULL);
-    close(fd[0]);
-*/
+    close(fd[0]);*/
+
     /******************************************************************************************************************/
     return 0;
 }

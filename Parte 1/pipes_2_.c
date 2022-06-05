@@ -14,21 +14,7 @@ char *salas_2_[] = {"sala_triagem", "triagem", "sala_de_espera", "consulta"};
 
 void handle_sigusr1(int signal_number) {
    // if (signal_number == SIGUSR1) {
-        char *arg_list[] = {
-                "ls",     /* argv[0], the name of the program.  */
-                "-l",
-                "/",
-                NULL      /* The argument list must end with a NULL.  */
-        };
 
-        char *env_list[] = {
-                "User=pmsobral",
-                NULL      /* The env list must end with a NULL.  */
-        };
-        //execvp(arg_list[0], arg_list);
-        // execvp("ls", "-l", "/", NULL);
-        // execve("/bin/ls", arg_list, env_list);
-        // execlp("./teste", NULL);
     }
 //}
 
@@ -44,7 +30,9 @@ int main_pipes_2_(int argc, char *argv[]) {
     for (int index = 0; index < lines; ++index) {
         arr[index] = (int *) malloc(COLUMNS * sizeof(int));
     }
+
     int *arr1 = (int *) malloc(size * sizeof(int));
+
     int z = 0;
     char buffer[SIZE];
     ler_ficheiro_2_(arr, lines);
@@ -53,14 +41,13 @@ int main_pipes_2_(int argc, char *argv[]) {
             currentTime = *(*(arr + x) + y);
             mytime = localtime(&currentTime);
             arr1[z] = mytime->tm_year + 1900;
-            //printf("%d\n",arr1[z]);
             z++;
         }
     }
 
     // Traverse the sorted array
     int res = 0;
-    for (int i = 0; i < size; i++) {
+   for (int i = 0; i < size; i++) {
 
         // Move the index ahead while
         // there are duplicates
@@ -69,9 +56,12 @@ int main_pipes_2_(int argc, char *argv[]) {
         }
         res++;
     }
-    int PROCESS_NUM = res / 1000;
+    printf("%d",res);
 
-    int pids[PROCESS_NUM], fds[PROCESS_NUM][2];
+    int PROCESS_NUM = res/1000;
+
+
+   /* int pids[PROCESS_NUM], fds[PROCESS_NUM][2];
 
     for (int i = 1; i <= PROCESS_NUM; i++) {
         //pids[i] = fork();
@@ -86,18 +76,18 @@ int main_pipes_2_(int argc, char *argv[]) {
             close(fds[i][1]);
             exit(0);
         }
-    }
+    }*/
 
     //Main Process
-   // struct sigaction sa;
+    // struct sigaction sa;
     //sa.sa_flags = SA_RESTART;
     //sa.sa_handler = &handle_sigusr1;
     //sigaction(SIGUSR1, &sa, NULL);
 
-    for (int i = 0; i < PROCESS_NUM; i++) {
+    /*for (int i = 0; i < PROCESS_NUM; i++) {
         int ocupacao_2_[4], id_2_, timestamps_2_;
         char *salas_3_[4];
-        int ficheiro = open("C:\\Users\\tiago\\CLionProjects\\SO\\Data\\pipe.txt", O_WRONLY | O_APPEND | O_CREAT, 0666);
+        int ficheiro = open("C:\\Users\\tiago\\CLionProjects\\SO\\Data\\pipe_2_.txt", O_WRONLY | O_APPEND | O_CREAT, 0666);
         close(fds[i][1]);
         dup(ficheiro);
         ssize_t n;
@@ -107,7 +97,7 @@ int main_pipes_2_(int argc, char *argv[]) {
         }
         //wait(NULL);
         close(fds[i][0]);
-    }
+    }*/
 
 
     return 0;
@@ -206,7 +196,7 @@ void ocupacao_das_salas_2_(int **arr, int lines, int n, int fd[][2], int PROCESS
                 sprintf(buf, "id: %d | timestamp: %d | sala: %s | ocupacao: %d", id, timestamps, *(salas_2_ + i),
                         ocupacao[i]);
                 strcat(buf, "\n");
-                writen(fd[n][1], buf, strlen(buf));
+                //writen(fd[n][1], buf, strlen(buf));
                 ocupacao[i] = 0;
             }
             free(buf);

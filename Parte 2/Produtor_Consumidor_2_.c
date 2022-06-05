@@ -1,80 +1,81 @@
 //
-// Created by tiago on 03/06/2022.
+// Created by tiago on 05/06/2022.
 //
 
-#include "Produtor_Consumidor.h"
+#include "Produtor_Consumidor_2_.h"
+
 
 #define THREADS_Produtor 2
 #define THREADS_Consumidor 2
 #define COLUMNS 5
-
+struct tm *mytime;
 char path_3_[100] = "C:\\Users\\tiago\\CLionProjects\\SO\\Data\\INFO_THREADS_PC_TXT.txt";
 
 int **arr;
+int **produto;
 int lines;
 int x1 = 0;
 int size_process_child = 0;
-int q = 1;
-
+int timestamps;
 /*
 pthread_mutex_t trincop, trincoc;
 sem_t pode_prod, pode_cons;
 
 
-void *Produtor(void *parameters) {
-    DYNARRAY_TIMESTAMPS *lt = (DYNARRAY_TIMESTAMPS *) parameters;
-    while (lt != NULL) {
+void *Produtor2(void *parameters) {
+    while (1){
         sem_wait(&pode_prod);
         pthread_mutex_lock(&trinco_p);
-
-        ocupacao_das_salas_4_(lt, q);
-        q++;
+        int index = *(int*) parameters;
+        ocupacao_das_salas_4_(index);
         pthread_mutex_unlock(&trinco_p);
         sem_post(&pode_cons);
     }
 }
 
-void *Consumidor(void *parameters) {
-    DYNARRAY_TIMESTAMPS *lt = (DYNARRAY_TIMESTAMPS *) parameters;
-    while (lt != NULL) {
-        {
-            sem_wait(&pode_cons);
-            pthread_mutex_lock(&trinco_c);
-            escrever_ficheiro_4_(lt);
-            pthread_mutex_unlock(&trinco_c);
-            sem_post(&pode_prod);
-        }
+void *Consumidor2(void *parameters) {
+    while(1)
+    {
+        sem_wait(&pode_cons);
+        pthread_mutex_lock(&trinco_c);
+        escrever_ficheiro_4_();
+        pthread_mutex_unlock(&trinco_c);
+        sem_post(&pode_prod);
     }
-*/
-int main_PC(int argc, char *argv[]) {
+}*/
+
+int main_PC2(int argc, char *argv[]) {
 
 
     /******************************************************************************************************************/
     char nameficheiro[] = "C:\\Users\\tiago\\CLionProjects\\SO\\Data\\all_timestamps.csv";
     int t_ficheiro = tamanho_do_ficheiro_4_(nameficheiro);
     lines = t_ficheiro;
-    DYNARRAY_TIMESTAMPS lt = {0, 0};
-    lt.timestamp = malloc(lines * sizeof(TIMESTAMP));
-    lt.currentadmissao = 0;
-
+    TH_DATA * TD = calloc(lines, sizeof(int));
     arr = (int **) malloc(lines * sizeof(int *));
     for (int index = 0; index < lines; ++index) {
         arr[index] = (int *) malloc(5 * sizeof(int));
     }
 
+    produto = (int **) malloc(lines * sizeof(int *));
+    for (int index = 0; index < lines; ++index) {
+        produto[index] = (int *) malloc(5 * sizeof(int));
+    }
+
     ler_ficheiro_4_();
+    //print_timestamps_4_();
     /******************************************************************************************************************/
     /* pthread_t thP[THREADS_Produtor], thC[THREADS_Consumidor];
      pthread_mutex_init(&mutex);
      sem_init(&pode_prod, 0, 1);
      sem_init(&pode_cons, 0, 1);
      for (int i = 1; i <= THREADS_Produtor; i++) {
-         if (pthread_create(&thP[i], NULL, &threads_ocupacao, &lt) != 0) {
+         if (pthread_create(&thP[i], NULL, &threads_ocupacao, NULL) != 0) {
              perror("Failed to create thread Produtor!");
          }
      }
      for (int i = 0; i < THREADS_Consumidor; i++) {
-         if (pthread_create(&thC[i], NULL, &threads_ocupacao, &lt) != 0) {
+         if (pthread_create(&thC[i], NULL, &threads_ocupacao, NULL) != 0) {
              perror("Failed to create thread Consumidor!");
          }
      }
@@ -100,7 +101,7 @@ int main_PC(int argc, char *argv[]) {
     return 0;
 }
 
-int tamanho_do_ficheiro_4_(char nameficheiro[]) {
+int tamanho_do_ficheiro_5_(char nameficheiro[]) {
     int count = 0;
     FILE *fp;
     fp = fopen(nameficheiro, "r");
@@ -121,8 +122,7 @@ int tamanho_do_ficheiro_4_(char nameficheiro[]) {
     return count;
 }
 
-
-void ler_ficheiro_4_() {
+void ler_ficheiro_5_() {
     FILE *file;
     file = fopen("C:\\Users\\tiago\\CLionProjects\\SO\\Data\\all_timestamps.csv", "r");
 
@@ -153,13 +153,11 @@ void ler_ficheiro_4_() {
     }
 }
 
-void ocupacao_das_salas_4_(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int n) {
+void ocupacao_das_salas_5_(int n) {
     int size = lines / THREADS_Produtor;
     size_process_child = size * n;
-    int timestamps;
-    int ocupacao[4] = {0, 0, 0, 0};
 
-    TIMESTAMP *t = dynarrayTimestamps->timestamp + x1;
+    int ocupacao[4] = {0, 0, 0, 0};
     if (n == THREADS_Produtor && lines % 2 != 0) {
         size_process_child++;
     }
@@ -185,13 +183,11 @@ void ocupacao_das_salas_4_(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int n) {
                 ocupacao[3]++;
             }
         }
-        t->admissao = timestamps;
-        t->ocupacaoET = ocupacao[0];
-        t->ocupacaoT = ocupacao[1];
-        t->ocupacaoSE = ocupacao[2];
-        t->ocupacaoC = ocupacao[3];
-        t++;
-        dynarrayTimestamps->currentadmissao++;
+        *(*(produto + x) + 0) = timestamps;
+        *(*(produto + x) + 1) = ocupacao[0];
+        *(*(produto + x) + 2) = ocupacao[1];
+        *(*(produto + x) + 3) = ocupacao[2];
+        *(*(produto + x) + 4) = ocupacao[3];
         for (int i = 0; i < 4; i++) {
             ocupacao[i] = 0;
         }
@@ -199,21 +195,33 @@ void ocupacao_das_salas_4_(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int n) {
 
 }
 
-void escrever_ficheiro_4_(DYNARRAY_TIMESTAMPS *dynarrayTimestamps) {
-    int fd = open(path_3_, O_WRONLY | O_APPEND | O_CREAT, 0744);
+void escrever_ficheiro_5_() {
+    time_t currentTime;
+    int ano = 0;
+
+    for (int x = 0; x < lines; x++) {
+        for (int y = 0; y < COLUMNS; y++) {
+            currentTime = timestamps;
+            mytime = localtime(&currentTime);
+            ano = mytime->tm_year + 1900;
+        }
+    }
+    char s[1024];
+    sprintf(s,"C:\\Users\\tiago\\CLionProjects\\SO\\Data\\output-%d.txt",ano);
+    int fd = open(s, O_WRONLY | O_APPEND | O_CREAT, 0744);
 
     if (fd == -1) {
         perror("File open");
         exit(1);
     }
-    TIMESTAMP *t = dynarrayTimestamps->timestamp + 0;
+
     char *buf = (char *) malloc(sizeof(char) * 1000000);
 
-    for (int x = x1; x < size_process_child; x++) {
-        sprintf(buf, "%d | %d | %d | %d | %d\n", t->admissao, t->ocupacaoET, t->ocupacaoT, t->ocupacaoSE,
-                t->ocupacaoC);
-        remove_timestamp(dynarrayTimestamps,t->admissao);
-        t++;
+    for (int x = x1; x < size_process_child; x++){
+        for(int y = 0; y < 5; y++){
+            sprintf(buf, "%d    ", *(*(produto + x) + y));
+        }
+        strcat(buf, "\n");
     }
 
     strcat(buf, "\n");
@@ -222,34 +230,16 @@ void escrever_ficheiro_4_(DYNARRAY_TIMESTAMPS *dynarrayTimestamps) {
 
     close(fd);
     free(buf);
-}
-
-void remove_timestamp(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int timestamp) {
-    TIMESTAMP *t= dynarrayTimestamps->timestamp + dynarrayTimestamps->currentadmissao;
-    TIMESTAMP tim = {0,0,0,0,0};
-    TIMESTAMP *found_timestamp = find_timestamp(dynarrayTimestamps, timestamp);
-
-
-        while (found_timestamp < t) {
-            *found_timestamp = *(found_timestamp + 1);
-            found_timestamp++;
-        }
-        if (found_timestamp == t) {
-            *found_timestamp = tim;
-        }
-    dynarrayTimestamps->currentadmissao--;
 
 }
 
-TIMESTAMP *find_timestamp(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int timestamp) {
-    TIMESTAMP *t = dynarrayTimestamps->timestamp;
+void print_timestamps_5_() {
 
-    while (t != NULL) {
-        if (timestamp == t->admissao) {
-            return t;
+    for (int x = 0; x < lines; x++) {
+        for (int y = 0; y < COLUMNS; y++) {
+            printf("%d ", *(*(produto + x) + y));
         }
-        t++;
+        printf("\n");
     }
 
-    return NULL;
 }

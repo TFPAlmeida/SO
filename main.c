@@ -8,8 +8,8 @@
 int main(int argc, char * argv[]) {
     //main_process(argc, argv);
     //main_pipes(argc, argv);
-    //main_pipes_2_(argc, argv);
+    main_pipes_2_(argc, argv);
     //main_threads(argc, argv);
-    main_PC(argc, argv);
+    //main_PC(argc, argv);
     return 0;
 }

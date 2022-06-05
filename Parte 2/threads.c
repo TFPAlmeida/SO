@@ -7,14 +7,14 @@
 #define THREADS_NUM 2
 #define COLUMNS 5
 
-char path_1_[100] = "C:\\Users\\tiago\\CLionProjects\\SO\\Data\\INFO_TXT.txt";
+char path_1_[100] = "C:\\Users\\tiago\\CLionProjects\\SO\\Data\\INFO_THREADS_TXT.txt";
 char *salas_3_[] = {"sala_triagem", "triagem", "sala_de_espera", "consulta"};
 
 int** arr;
-int lines;
-//pthread_mutex_t mutexWorker;
+int lines;/*
+pthread_mutex_t mutexWorker;
 int contador = 0;
-/*
+
 void *threads_ocupacao(void *parameters){
     pthread_mutex_lock(&mutexWorker);
     int index = *(int*) parameters;
@@ -40,7 +40,7 @@ int main_threads(int argc, char *argv[]) {
     ler_ficheiro_3_();
     //print_timestamps_3_();
     /******************************************************************************************************************/
-    /*pthread_t th[THREADS_NUM];
+   /* pthread_t th[THREADS_NUM];
     pthread_mutex_init(&mutexWorker);
     for(int i = 1; i <= THREADS_NUM; i++){
         int * a = malloc(sizeof(int));
@@ -56,7 +56,7 @@ int main_threads(int argc, char *argv[]) {
         }
     }
      pthread_mutex_destroy(&mutexWorker);
-     */
+*/
     /******************************************************************************************************************/
 
     return 0;
@@ -132,7 +132,7 @@ void ocupacao_das_salas_3_(int n) {
     for (int x = x1; x < size_process_child; x++) {
         for (int z = 0; z < COLUMNS; z++) {
             timestamps = *(*(arr + x) + z);
-            contador++;
+           // contador++;
             for (int y = x1; y < size_process_child; y++) {
 
                 if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 1)) {

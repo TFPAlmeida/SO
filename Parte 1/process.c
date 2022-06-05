@@ -23,9 +23,9 @@ int main_process(int argc, char *argv[]) {
     }
 
     ler_ficheiro(arr, lines);
-    print_timestamps(arr, lines);
+    //print_timestamps(arr, lines);
     /******************************************************************************************************************/
-   /* int pids[PROCESS_NUM];
+    /*int pids[PROCESS_NUM];
 
     for (int i = 1; i <= PROCESS_NUM; i++) {
         pids[i] = fork();
@@ -113,11 +113,13 @@ void ocupacao_das_salas(int** arr, int lines, int n) {
         x1 = size * (n - 1);
     }
 
-
-    for (int x = x1; x < size_process_child; x++) {
-        for (int z = 0; z < COLUMNS; z++) {
+    int x;
+    int z;
+    int y;
+    for (x = x1; x < size_process_child; x++) {
+        for (z = 0; z < COLUMNS; z++) {
             timestamps = *(*(arr + x) + z);
-            for (int y = x1; y < size_process_child; y++) {
+            for (y = x1; y < size_process_child; y++) {
 
                 if (*(*(arr + y) + 0) < timestamps < *(*(arr + y) + 1)) {
                     ocupacao[0]++;
@@ -153,8 +155,8 @@ void escrever_ficheiro(char *path1, int timestamps, int ocupacao[4]) {
     }
 
     char *buf = (char *) malloc(sizeof(char) * 1000000);
-
-    for (int i = 0; i < 4; i++) {
+    int i;
+    for (i = 0; i < 4; i++) {
         printf("%d",i);
         sprintf(buf, "id: %d | timestamp: %d | sala: %s | ocupacao: %d", getpid(), timestamps, *(salas + i),
                 ocupacao[i]);
