@@ -34,8 +34,8 @@ void ler_ficheiro_4_();
 void ocupacao_das_salas_4_(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int n);
 void escrever_ficheiro_4_(DYNARRAY_TIMESTAMPS *dynarrayTimestamps);
 void print_timestamps_4_();
-void *threads_produtor(void *parameters);
-void *threads_consumidor(void *parameters);
+void *Produtor(void *parameters);
+void *Consumidor(void *parameters);
 TIMESTAMP *find_timestamp(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int timestamp);
 void remove_timestamp(DYNARRAY_TIMESTAMPS *dynarrayTimestamps, int timestamp);
 #endif //SO_PRODUTOR_CONSUMIDOR_H
